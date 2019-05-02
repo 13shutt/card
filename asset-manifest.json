@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.c0cfcd21.chunk.css",
-    "main.js": "/static/js/main.44b9bc87.chunk.js",
-    "main.js.map": "/static/js/main.44b9bc87.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/js/2.39b5aaa9.chunk.js": "/static/js/2.39b5aaa9.chunk.js",
-    "static/js/2.39b5aaa9.chunk.js.map": "/static/js/2.39b5aaa9.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.13eaa603f5ab2642d0bb7cb63f502640.js": "/precache-manifest.13eaa603f5ab2642d0bb7cb63f502640.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.c0cfcd21.chunk.css.map": "/static/css/main.c0cfcd21.chunk.css.map",
-    "static/media/user.jpg": "/static/media/user.2b6ae890.jpg"
+    "main.css": "https://13shutt.github.io/card/static/css/main.c0cfcd21.chunk.css",
+    "main.js": "https://13shutt.github.io/card/static/js/main.076cbe75.chunk.js",
+    "main.js.map": "https://13shutt.github.io/card/static/js/main.076cbe75.chunk.js.map",
+    "runtime~main.js": "https://13shutt.github.io/card/static/js/runtime~main.642ef990.js",
+    "runtime~main.js.map": "https://13shutt.github.io/card/static/js/runtime~main.642ef990.js.map",
+    "static/js/2.39b5aaa9.chunk.js": "https://13shutt.github.io/card/static/js/2.39b5aaa9.chunk.js",
+    "static/js/2.39b5aaa9.chunk.js.map": "https://13shutt.github.io/card/static/js/2.39b5aaa9.chunk.js.map",
+    "index.html": "https://13shutt.github.io/card/index.html",
+    "precache-manifest.1989d5305729f9a9aff407eadf02d3ac.js": "https://13shutt.github.io/card/precache-manifest.1989d5305729f9a9aff407eadf02d3ac.js",
+    "service-worker.js": "https://13shutt.github.io/card/service-worker.js",
+    "static/css/main.c0cfcd21.chunk.css.map": "https://13shutt.github.io/card/static/css/main.c0cfcd21.chunk.css.map",
+    "static/media/user.jpg": "https://13shutt.github.io/card/static/media/user.2b6ae890.jpg"
   }
 }
