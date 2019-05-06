@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import shortid from 'shortid'
+import ContentEditable from 'react-contenteditable'
+
 import user from 'assets/user.jpg'
 import './sidebar.css'
 import Input from './input'
 import Dropdown from './dropdown'
 import './input.css'
+import plus from 'assets/plus-1.svg'
 
 
 class Sidebar extends Component {
@@ -11,117 +15,104 @@ class Sidebar extends Component {
         showInput: false,
         type: "",
         contacts: [
-            {id: 0, number: "vitalya@gmail.com", type: "Емейл"},
-            {id: 1, number: "vitalya.getsome.com", type: "Ссылка"},
-            {id: 2, number: "streeet 13", type: "Адрес"},
-            {id: 3, number: "0934324352", type: "Телефон"}
+            {id: shortid.generate(), data: "vitalya@gmail.com", type: "Емейл"},
+            {id: shortid.generate(), data: "vitalya.getsome.com", type: "Ссылка"},
+            {id: shortid.generate(), data: "streeet 13", type: "Адрес"},
+            {id: shortid.generate(), data: "0934324352", type: "Телефон"}
         ],
         id: "",
-        contextID: "",
+        html: "<p>Lorem Ipsum - это текст-'рыба', часто используемый в печати и веб-дизайне. Lorem Ipsum является стандартной 'рыбой' для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.</p>",
         selectID: ""
     }
 
     componentDidMount() {
         document.body.addEventListener('click', (e) => {
-            e.path.length === 11
-            ? this.setState({selectID: e.path[1].id})
-            : console.log(e.path[1].id, 'selectID')
-            if (this.state.showInput) {
-                e.target === document.querySelector('.num')
-                ? console.log('zaebumba')
-                : this.addNumberToState()
-            } 
-            if (e.target !== document.querySelector('#editInput') && document.querySelector('#editInput') !== null) {
+
+            this.toggleContextMenu(e)
+
+            if (document.getElementById('editInput') !== null && e.target.classList.contains('contact')) {
+                document.getElementById('editInput').remove()
+                document.querySelector('.hide').classList.remove("hide")
+            }
+
+            if (!e.target.classList.contains('edit') && document.getElementById('editInput') !== null) {
                 this.saveEditedToState()
             }
-        })
-        document.body.addEventListener('keydown', (e) => {
-            if (e.keyCode === 13 && this.state.showInput) {
-                this.addNumberToState()
-            }
-        })
-        document.body.addEventListener('click', (e) => {
-            if (e.path[1].id === e.path[2].id + '-num' && e.path.length === 11) {
-                this.setState({contextID: `${e.path[2].id} + '-num'`})
-                document.querySelectorAll('.show').length === 0
-                ? document.getElementById(`${e.path[2].id}-drop`).classList.add('show')
-                : document.querySelector('.show').classList.remove('show')
-            } else {
-                if (document.querySelectorAll('.show').length === 1) {
-                    document.querySelector('.show').classList.remove('show')
-                }
-            }
-            if (e.target.id === 'editInput') {
-                document.querySelectorAll('.show').forEach(item => {
-                    item.classList.remove('show')
-                })
-            }
+
+            if (!e.target.classList.contains('num') && this.state.showInput) {
+                this.addItemToState()
+            } 
         })
     }
 
-
-    getRandomInt(min, max){
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    toggleContextMenu = (e) => {
+        let selectID = e.target.id.slice(0, e.target.id.indexOf('-item'))
+        if (e.target.className === 'contact' && document.querySelectorAll(`.show`).length === 0) {
+            this.setState({selectID: selectID})
+            document.getElementById(`${this.state.selectID}-drop`).classList.toggle('show')
+        } else {
+            document.querySelectorAll(`.show`).forEach(item => item.classList.remove('show'))
+        }
     }
-    
 
-    addNumber = (type, id) => {
+
+
+
+    addInput = (type, id) => {
         this.state.showInput 
         ? this.setState({ showInput: false})
         : this.setState({ showInput: true, type: type, id: id})
     }
 
-    addNumberToState = () => {
-        let number, ind
-        if (document.querySelector('.num') !== null) {
-            if (document.querySelector('.num').value > 0) {
-                number = document.querySelector('.num').value
-            } else {
-                number = "..."
-            } 
-        }
+    addItemToState = () => {
+        let element, ind
 
-        this.state.contacts.forEach((item, index) => item.id === this.state.id ? ind = index : null)
+        document.querySelector('.num').value !== ""
+        ? element = document.querySelector('.num').value
+        : element = "..."
+
+        this.state.contacts.forEach((item, index) => item.id === this.state.id ? ind = index : console.log('hzhz'))
         this.setState({
             contacts: [
                 ...this.state.contacts.slice(0, ind + 1),
-                {id: this.getRandomInt(1, 1000), number: number, type: this.state.type},
+                {id: shortid.generate(), data: element, type: this.state.type},
                 ...this.state.contacts.slice(ind + 1, this.state.contacts.length)
-            ]
+            ],
+            showInput: false
         })
-        this.addNumber()
     }
 
     saveEditedToState = () => {
-        let trueID = this.state.selectID.slice(0, this.state.selectID.indexOf('-num'))
+        let input = document.getElementById('editInput')
         for (let i = 0; i < this.state.contacts.length; i++) {
-            if (this.state.contacts[i].id === +trueID) {
+            if (this.state.contacts[i].id === this.state.selectID) {
+                console.log(input.value)
                 this.setState({
                     contacts: [
                         ...this.state.contacts.slice(0, i),
-                        {id: this.state.contacts[i].id, number: document.getElementById('editInput').value, type: this.state.contacts[i].type},
+                        {id: this.state.contacts[i].id, data: input.value, type: this.state.contacts[i].type},
                         ...this.state.contacts.slice(i + 1, this.state.contacts.length + 1)
                     ]
                 })
-                document.getElementById('editInput').remove()
-                document.getElementById(this.state.selectID).children[0].classList.remove("hide")
+                input.remove()
+                document.getElementById(`${this.state.selectID}-num-el`).classList.remove("hide")
             }   
         }
     }
 
     copy = () => {
-        let copyText = document.getElementById(this.state.selectID).children[0].innerText
+        let copyText = document.getElementById(`${this.state.selectID}-item`).innerText
         navigator.clipboard.writeText(copyText)
     }
 
     edit = () => {
-        document.getElementById(this.state.selectID).children[0].classList.add("hide")
+        document.getElementById(`${this.state.selectID}-num-el`).classList.add("hide")
         let input = document.createElement('input');
-        input.className = "num"
+        input.className = "edit num"
         input.id = "editInput"
         for (let i = 0; i < this.state.contacts.length; i++) {
-            `${this.state.contacts[i].id}-num` === this.state.selectID
-            ? input.value = `${this.state.contacts[i].number}`
+            this.state.contacts[i].id === this.state.selectID
+            ? input.value = `${this.state.contacts[i].data}`
             : console.log(null)
         }
         document.getElementById(this.state.selectID).appendChild(input)
@@ -129,7 +120,7 @@ class Sidebar extends Component {
 
     remove = () => {
         for (let i = 0; i < this.state.contacts.length; i++) {
-            if (`${this.state.contacts[i].id}-num` === this.state.selectID) {
+            if (this.state.contacts[i].id === this.state.selectID) {
                 this.setState({
                     contacts: [
                         ...this.state.contacts.slice(0, i),
@@ -139,6 +130,11 @@ class Sidebar extends Component {
             }
         }
     }
+
+    changeText = evt => {
+        this.setState({html: evt.target.value});
+        console.log('text edited')
+    };
 
     render() { 
         return (
@@ -169,29 +165,38 @@ class Sidebar extends Component {
                         {this.state.contacts.map(item => (
                             <>
                                 <div className="number" id={item.id}>
-                                    <div>{item.type}:</div> 
-                                    <span onClick={() => this.addNumber(item.type, item.id)}>
-                                        <i className="fas fa-plus-circle"></i>
-                                    </span>
-                                    <span id={`${item.id}-num`}>
-                                        <div className="contact">{item.number}</div>
-                                        <Dropdown 
-                                            id={item.id} 
-                                            copy={this.copy} 
-                                            edit={this.edit} 
-                                            remove={this.remove} 
+                                    <div className="type">
+                                        <div id={`${item.id}-type`}>{item.type}</div>
+                                        <div>:</div> 
+                                    </div>                                    
+                                    <div id={`${item.id}-num-el`} className="num-el">
+                                        <span id={`${item.id}-plus`} onClick={() => this.addInput(item.type, item.id)}>
+                                            <img className="plus" src={plus} alt=""/>
+                                        </span>
+                                        <span>
+                                            <div id={`${item.id}-item`} className="contact">{item.data}</div>
+                                            <Dropdown 
+                                                id={item.id} 
+                                                copy={this.copy} 
+                                                edit={this.edit} 
+                                                remove={this.remove} 
                                             />
-                                    </span>
+                                        </span>
+                                    </div>
                                 </div>
-                                {this.state.showInput && this.state.id === item.id && <Input type={this.state.type}/>}
+                                {this.state.showInput && this.state.id === item.id && <Input id={item.id} type={this.state.type}/>}
                             </>
                         ))}
                     </div>
                     <h2>Примечание:</h2>
                     <div className="adds">
-                        <p> {/*  contentEditable="true" */}
-                        Lorem Ipsum - это текст-"рыба", часто используемый в печати и веб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum.
-                        </p>
+                        <ContentEditable
+                            innerRef={this.contentEditable}
+                            html={this.state.html} 
+                            disabled={false}      
+                            onChange={this.changeText} 
+                            tagName='p' 
+                        />
                     </div>
                 </div>
             </>
