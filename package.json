@@ -1,13 +1,20 @@
 {
-  "name": "getsomefuck",
+  "name": "card",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "connected-react-router": "^6.3.2",
+    "history": "^4.9.0",
     "react": "^16.8.6",
     "react-contenteditable": "^3.2.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0",
-    "shortid": "^2.2.14",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
     "styled-components": "^4.2.0"
   },
   "scripts": {
@@ -19,16 +26,13 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
   }
 }
